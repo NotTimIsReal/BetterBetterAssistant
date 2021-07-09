@@ -5,7 +5,7 @@ const Discord=require('discord.js')
 const random = new Random(); // uses the nativeMath engine
 let heads=1;
 let tails=0;
-const value = Math.round(Math.random())
+const value = Math.floor(Math.random())
 
 
 

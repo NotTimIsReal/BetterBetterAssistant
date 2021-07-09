@@ -35,15 +35,16 @@ client.on('guildMemberAdd', member=>{
   const embed= new Discord.MessageEmbed()
       .setTitle('Welcome!')
       .setDescription(`Welcome to the server, ${member}`)
-      channel.send(embed);
+
   if (!channel){
       const channel=member.guild.channels.cache.find(ch => ch.name === 'general');
       const embed=Discord.MessageEmbed()
       .setTitle('Welcome!')
       .setDescription(`Welcome to the server, ${member}`)
-      channel.send('Add a member-log channel with a!member-log-add')}
+      channel.send(embed, 'Add a member-log channel with a!member-log-add')}
       channel.send(embed)
       }
+      
       )
 
 
