@@ -2,7 +2,7 @@ const Discord=require('discord.js')
 module.exports={
     name:'ban',
     description:'ban people',
-    execute(message,args){
+    execute(client, message,args){
         if(message.member.permissions.has('BAN_MEMBERS')){
             const user = message.mentions.users.first();
             // If we have a user mentioned

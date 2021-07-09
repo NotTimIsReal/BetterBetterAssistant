@@ -2,7 +2,7 @@ const Discord=require('discord.js')
 module.exports={
     name:'inviteLink',
     description:'Link for bot',
-    execute(message, args){
+    execute(client, message, args){
         const embed= new Discord.MessageEmbed()
             .setTitle('InviteLink')
             .setFooter('YourBetterAssitant')

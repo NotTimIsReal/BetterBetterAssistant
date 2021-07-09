@@ -2,7 +2,7 @@ const Discord=require('discord.js')
 module.exports={
     name:'embed',
     description:'Makes an embed for the member',
-    execute(message,args){
+    execute(client, message, args){
         avatar=message.author.avatar
         //Webhook
         description=args[0-20]

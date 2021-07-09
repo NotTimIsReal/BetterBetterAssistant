@@ -1,7 +1,7 @@
 module.exports = {
     name: 'clear',
     description: "Clear messages!",
-   async execute(message, args) {
+   async execute(client, message, args) {
         if (!args[0]) return message.reply("Please enter the amount of messages to clear!");
  
         if(isNaN(args[0])) return message.reply("Please type a real number!");

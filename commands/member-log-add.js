@@ -2,7 +2,7 @@ const Discord=require('discord.js')
 module.exports={
     name:'member-log-add',
     description:'Makes a channel called member-log',
-    execute(message, args){
+    execute(client, message, args){
         message.guild.channels.create('member-log', {
             type: "text", //This create a text channel, you can make a voice one too, by changing "text" to "voice"
             permissionOverwrites: [
