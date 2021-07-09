@@ -18,6 +18,7 @@ module.exports={
         console.log(image_results[0].title)
         let embed=new Discord.MessageEmbed()
         .setTitle(image_results[0].title)
+        .setURL(image_results[0].url)
         .setImage(image_results[0].url)
 
         message.channel.send(embed)

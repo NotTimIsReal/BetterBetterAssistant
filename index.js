@@ -1,11 +1,12 @@
 const Discord=require('discord.js');
-const { listenerCount } = require('events');
+const sudo=require('sudo-prompt')
 const client=new Discord.Client({partials:["MESSAGE","CHANNEL","REACTION"]});
 require('dotenv').config();
 const fs=require('fs');
-const { url } = require('inspector');
+
 const prefix=process.env.PREFIX
-const memberCounter=require('./counter/membercounter')
+const memberCounter=require('./counter/membercounter');
+const { userInfo } = require('os');
 //Stuff
 client.command= new Discord.Collection();
 
@@ -16,7 +17,8 @@ for(const file of commandFiles){
 }
 //Real stuff
 client.on('ready',()=>{
-    console.log('logged into account,online')
+
+    console.log('logged into account,bot is online')
     memberCounter(client)
     client.user.setPresence({
        activity: {
@@ -30,7 +32,7 @@ client.on('ready',()=>{
 client.on('guildMemberAdd', member=>{
     const channel = member.guild.channels.cache.find(ch => ch.name === 'member-log');
   // Do nothing if the channel wasn't found on this server
-  const embed=Discord.MessageEmbed()
+  const embed= new Discord.MessageEmbed()
       .setTitle('Welcome!')
       .setDescription(`Welcome to the server, ${member}`)
       channel.send(embed);
@@ -49,6 +51,7 @@ client.on('message',message=>{
     if(!message.content.startsWith(prefix)|| message.author.bot)return
     const args=message.content.slice(prefix.length).split(/ +/)
     const command=args.shift().toLowerCase();
+    if(message.author.id===null)return message.channel.reply('ur blacklisted')
     if(command==='ping'){
         client.command.get('ping').execute(client, message, args)
         console.log(`The command ${prefix}${command} was used`)
@@ -57,8 +60,8 @@ client.on('message',message=>{
         client.command.get('ban').execute(client, message, args)
         console.log(`The command ${prefix}${command} was used`)
     }
-    if(command==='embed'){
-        client.command.get('ban').execute(client, message, args)
+    if(command==='sudo'){
+        client.command.get('sudo').execute(client, message, args)
         console.log(`The command ${prefix}${command} was used`)
     }
     if(command==='invite'){
@@ -80,6 +83,7 @@ client.on('message',message=>{
     if(command==='member-log-add'){
         client.command.get('member-log-add').execute(client, message, args)
         console.log(`The command ${prefix}${command} was used`)
+
     }
     if(command==='clear'){
         client.command.get('clear').execute(client, message, args)
@@ -92,6 +96,7 @@ client.on('message',message=>{
     if(command==='reactionrole'){
         client.command.get('reactionrole').execute(client, message, args)
         console.log(`The command ${prefix}${command} was used`)
+        
     }
     if(command==='coinflip'){
         client.command.get('coinflip').execute(client, message, args)
@@ -107,6 +112,11 @@ client.on('message',message=>{
         client.command.get('image').execute(client, message, args)
         console.log(`The command ${prefix}${command} was used`)}
         
+})
+client.on('message', msg=>{
+    if (msg.content.startsWith('a!sudo')){
+        msg.delete({timeout:1000})
+    }
 })
     
             

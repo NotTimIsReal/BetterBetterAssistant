@@ -5,7 +5,7 @@ module.exports={
     execute(client, message, args){
         const embed= new Discord.MessageEmbed()
             .setTitle('InviteLink')
-            .setFooter('YourBetterAssitant')
+            .setFooter('YourBetterAssistant')
             .setURL('https://bit.ly/3hliGsX')
             .setColor('AQUA')
             
