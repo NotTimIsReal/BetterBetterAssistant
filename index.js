@@ -1,34 +1,31 @@
 const Discord=require('discord.js');
+const { listenerCount } = require('events');
 const client=new Discord.Client({partials:["MESSAGE","CHANNEL","REACTION"]});
 require('dotenv').config();
 const fs=require('fs');
+const { url } = require('inspector');
 const prefix=process.env.PREFIX
 const memberCounter=require('./counter/membercounter')
+//Stuff
+client.command= new Discord.Collection();
 
-client.command=new Discord.Collection();
-const commandFiles=fs.readdirSync('./commands/').filter(file =>file.endsWith('.js'));
+const commandFiles=fs.readdirSync('./commands').filter(file=>file.endsWith('.js'));
 for(const file of commandFiles){
-    const command=require(`./commands/${file}`);
-    client.command.set(command.name, command)
-    }
-
-
+    const command=require(`./commands/${file}`)
+    client.command.set(command.name, command);
+}
+//Real stuff
 client.on('ready',()=>{
     console.log('logged into account,online')
     memberCounter(client)
     client.user.setPresence({
        activity: {
            status:'idle',
-           name:'Helping People Since 2021',
-           type:'WATCHING'
+           name:'IN MAINTENANCE',
+           type:'STREAMING',
+           url:'https://google.com'
         
        }})
-
-    
-
-
-    
-
 })
 client.on('guildMemberAdd', member=>{
     const channel = member.guild.channels.cache.find(ch => ch.name === 'member-log');
@@ -46,68 +43,70 @@ client.on('guildMemberAdd', member=>{
       channel.send(embed)
       }
       )
-    
-
- 
-
- 
-    
 
 
-client.on('message', message=>{
-    if(message==='a!ping'){
-        message.channel.send('Pong')
-        console.log('Not pog')
+client.on('message',message=>{
+    if(!message.content.startsWith(prefix)|| message.author.bot)return
+    const args=message.content.slice(prefix.length).split(/ +/)
+    const command=args.shift().toLowerCase();
+    if(command==='ping'){
+        client.command.get('ping').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
     }
-    if(!message.content.startsWith(prefix)||message.author.bot)return
-    const args=message.content.slice(prefix.length).split(/ +/);
-    const command=args.shift().toLowerCase
-   if(command==='ping'){
-       message.channel.send('pong')
-       client.command.get('ping').execute(client, message, args)}
-   if(command==='invite'){
-    client.command.get('inviteLink').execute(client, message, args)
-   }
-   if(command==='invitelink'){
-    client.command.get('inviteLink').execute(client, message, args)
-   }
-   if(command==='link'){
-    client.command.get('inviteLink').execute(client, message, args)
-   }
-   if(command==='embed'){
-    client.command.get('embed').execute(client, message, args)
-   }
-   if(command==='ban'){
-    client.command.get('ban').execute(client, message, args)
-   }
-   if(command==='image'){
-    client.command.get('image').execute(client, message, args)
-   }
-   if(command==='kick'){
-    client.command.get('kick').execute(client, message, args)
-   }
-   if(command==='leave'){
-    client.command.get('leave').execute(client, message, args)
-   }
-   if(command==='play'){
-    client.command.get('play').execute(client, message, args)
-   }
-   if(command==='mcserver'){
-    client.command.get('mcserver').execute(client, message, args)
-   }
-   if(command==='member-log-add'){
-    client.command.get('member-log-add').execute(client, message, args)
-   }
-   if(command==='clear'){
-    client.command.get('clear').execute(client, message, args)
-   }
-   if(command==='reactionroles'){
-    client.command.get('reactionroles').execute(client, message, args)
-   }
+    if(command==='ban'){
+        client.command.get('ban').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='embed'){
+        client.command.get('ban').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='invite'){
+        client.command.get('inviteLink').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='kick'){
+        client.command.get('kick').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='leave'){
+        client.command.get('leave').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='mcserver'){
+        client.command.get('mcserver').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='member-log-add'){
+        client.command.get('member-log-add').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='clear'){
+        client.command.get('clear').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='play'){
+        client.command.get('play').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='reactionrole'){
+        client.command.get('reactionrole').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='coinflip'){
+        client.command.get('coinflip').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)
+    }
+    if(command==='inviteLink'){
+        client.command.get('inviteLink').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)}
+    if(command==='link'){
+        client.command.get('inviteLink').execute(client, message, args)
+            console.log(`The command ${prefix}${command} was used`)}
 })
-
-
- 
+    
+            
+    
 
 
 
