@@ -102,7 +102,11 @@ client.on('message',message=>{
         console.log(`The command ${prefix}${command} was used`)}
     if(command==='link'){
         client.command.get('inviteLink').execute(client, message, args)
-            console.log(`The command ${prefix}${command} was used`)}
+        console.log(`The command ${prefix}${command} was used`)}
+    if(command==='image'){
+        client.command.get('image').execute(client, message, args)
+        console.log(`The command ${prefix}${command} was used`)}
+        
 })
     
             
