@@ -27,6 +27,6 @@ client.on('ready',()=>{
 
 
 
-client.login(process.env.TOKEN).then(memberCounter(client))
+client.login(process.env.TOKEN)
 
 
