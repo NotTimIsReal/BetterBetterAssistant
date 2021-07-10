@@ -11,6 +11,7 @@ const value = Math.floor(Math.random())
 
 module.exports={
     name:'coinflip',
+    aliases:['ht','th'],
     description:'Flips a virtual coin',
     async execute(client ,message, args){
         await value

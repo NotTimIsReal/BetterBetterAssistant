@@ -1,13 +1,15 @@
+require('dotenv').config();
 const Discord=require('discord.js');
 const sudo=require('sudo-prompt')
 const client=new Discord.Client({partials:["MESSAGE","CHANNEL","REACTION"]});
-require('dotenv').config();
 const fs=require('fs');
 
-const prefix=process.env.PREFIX
+const myprefix=process.env.PREFIX
+const token=process.env.PREFIX
+
 const memberCounter=require('./counter/membercounter');
 const { userInfo } = require('os');
-//Stuff
+//Stuff 
 client.command= new Discord.Collection();
 
 const commandFiles=fs.readdirSync('./commands').filter(file=>file.endsWith('.js'));
@@ -15,8 +17,16 @@ for(const file of commandFiles){
     const command=require(`./commands/${file}`)
     client.command.set(command.name, command);
 }
-//Real stuff
+//Real stuff comment this out if ur not using unix
+
+//Ready+
 client.on('ready',()=>{
+    const spawn=require('child_process').spawn;
+    const process=spawn('python', ['./python/main.py'])
+    process.stdout.on('data', data=>{
+        console.log(data.toString());
+    })
+
 
     console.log('logged into account,bot is online')
     memberCounter(client)
@@ -49,69 +59,17 @@ client.on('guildMemberAdd', member=>{
 
 
 client.on('message',message=>{
-    if(!message.content.startsWith(prefix)|| message.author.bot)return
-    const args=message.content.slice(prefix.length).split(/ +/)
-    const command=args.shift().toLowerCase();
-    if(message.author.id===null)return message.channel.reply('ur blacklisted')
-    if(command==='ping'){
-        client.command.get('ping').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
+    let blacklist=['789325858758066236','778549220755898368']
+    if(message.author.id===blacklist)return message.channel.send('Blacklist goes brr')
+    if(!message.content.startsWith(myprefix)|| message.author.bot)return
+    const args=message.content.slice(myprefix.length).split(/ +/)
+    const cmd=args.shift().toLowerCase();
+    const command=client.command.get(cmd)|| client.command.find(a=> a.aliases&& a.aliases.includes(cmd))
+    //Good thing
+    if(command){
+        command.execute(client, message, args)
     }
-    if(command==='ban'){
-        client.command.get('ban').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='sudo'){
-        client.command.get('sudo').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='invite'){
-        client.command.get('inviteLink').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='kick'){
-        client.command.get('kick').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='leave'){
-        client.command.get('leave').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='mcserver'){
-        client.command.get('mcserver').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='member-log-add'){
-        client.command.get('member-log-add').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-
-    }
-    if(command==='clear'){
-        client.command.get('clear').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='play'){
-        client.command.get('play').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='reactionrole'){
-        client.command.get('reactionrole').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-        
-    }
-    if(command==='coinflip'){
-        client.command.get('coinflip').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)
-    }
-    if(command==='inviteLink'){
-        client.command.get('inviteLink').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)}
-    if(command==='link'){
-        client.command.get('inviteLink').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)}
-    if(command==='image'){
-        client.command.get('image').execute(client, message, args)
-        console.log(`The command ${prefix}${command} was used`)}
+    
         
 })
 client.on('message', msg=>{
@@ -119,6 +77,7 @@ client.on('message', msg=>{
         msg.delete({timeout:1000})
     }
 })
+
     
             
     
