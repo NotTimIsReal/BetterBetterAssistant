@@ -1,6 +1,7 @@
 const Discord=require('discord.js')
 module.exports={
     name:'sudo',
+    cooldown:10,
     description:'Makes an embed for the member',
     execute(client, message, args){
         message.channel.delete

@@ -5,6 +5,7 @@ const username=process.env.CODUSER
 const password=process.env.CODPASS
 module.exports={
     name:'cod',
+    aliases:['callofdutystats','callofduty'],
     description:'cod stats',
     async execute(client, message, args){
         if (!args[0]) return message.channel.send('who is the player');

@@ -19,6 +19,7 @@
     "math": "0.0.3",
     "minecraft-server-util": "^3.5.2",
     "random-js": "^2.1.0",
+    "spotify-url-info": "^2.2.3",
     "sudo-prompt": "^9.2.1",
     "wget": "0.0.1",
     "yt-search": "^2.9.0",

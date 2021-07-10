@@ -10,6 +10,8 @@ const google = new Scraper({
 
 module.exports={
     name:'image',
+    cooldown:10,
+    aliases:['img','searchimage'],
     description:'name an image and I will send it',
     async execute(client, message, args){
         const image_query=args.join(' ')

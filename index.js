@@ -8,7 +8,6 @@ const myprefix=process.env.PREFIX
 const token=process.env.PREFIX
 
 const memberCounter=require('./counter/membercounter');
-const { userInfo } = require('os');
 //Stuff 
 client.command= new Discord.Collection();
 
@@ -32,12 +31,11 @@ client.on('ready',()=>{
     memberCounter(client)
     client.user.setPresence({
        activity: {
-           status:'idle',
-           name:'IN MAINTENANCE',
-           type:'STREAMING',
-           url:'https://google.com'
+           status:'online',
+           name:'People since 2021',
+           type:'WATCHING',
         
-       }})
+       }}).then(console.log('Presence has been set'))
 })
 client.on('guildMemberAdd', member=>{
     const channel = member.guild.channels.cache.find(ch => ch.name === 'member-log');
@@ -57,6 +55,40 @@ client.on('guildMemberAdd', member=>{
       
       )
 
+const cooldowns=new Map(); 
+const validPermissions = [
+    "CREATE_INSTANT_INVITE",
+    "KICK_MEMBERS",
+    "BAN_MEMBERS",
+    "ADMINISTRATOR",
+    "MANAGE_CHANNELS",
+    "MANAGE_GUILD",
+    "ADD_REACTIONS",
+    "VIEW_AUDIT_LOG",
+    "PRIORITY_SPEAKER",
+    "STREAM",
+    "VIEW_CHANNEL",
+    "SEND_MESSAGES",
+    "SEND_TTS_MESSAGES",
+    "MANAGE_MESSAGES",
+    "EMBED_LINKS",
+    "ATTACH_FILES",
+    "READ_MESSAGE_HISTORY",
+    "MENTION_EVERYONE",
+    "USE_EXTERNAL_EMOJIS",
+    "VIEW_GUILD_INSIGHTS",
+    "CONNECT",
+    "SPEAK",
+    "MUTE_MEMBERS",
+    "DEAFEN_MEMBERS",
+    "MOVE_MEMBERS",
+    "USE_VAD",
+    "CHANGE_NICKNAME",
+    "MANAGE_NICKNAMES",
+    "MANAGE_ROLES",
+    "MANAGE_WEBHOOKS",
+    "MANAGE_EMOJIS",
+  ]
 
 client.on('message',message=>{
     let blacklist=['789325858758066236','778549220755898368']
@@ -65,16 +97,44 @@ client.on('message',message=>{
     const args=message.content.slice(myprefix.length).split(/ +/)
     const cmd=args.shift().toLowerCase();
     const command=client.command.get(cmd)|| client.command.find(a=> a.aliases&& a.aliases.includes(cmd))
+    if(!command)return message.channel.send('That is an invalid command')
+    if(!cooldowns.has(command.name)){
+        cooldowns.set(command.name, new Discord.Collection())
+    }
+    const current_time= Date.now();
+    const time_stamps=cooldowns.get(command.name)
+    const cooldown_amount=(command.cooldown)*1000
+    if(time_stamps.has(message.author.id)){
+        const expiration_time=time_stamps.get(message.author.id)+cooldown_amount
+        if(current_time<expiration_time){
+            const time_left=(expiration_time - current_time) / 1000
+            const embed=new Discord.MessageEmbed()
+            .setTitle('Cooldown')
+            .setColor('#f093')
+            .setDescription(`<@!${message.author.id}> you have ${time_left.toFixed(1)} seconds left `)
+            return message.reply(embed)
+        }
+    }
+    time_stamps.set(message.author.id, current_time)
+    setTimeout(()=> time_stamps.delete(message.author.id), cooldown_amount)
     //Good thing
     if(command){
-        command.execute(client, message, args)
+        command.execute(client, message, args, cmd)
+        console.log(`the command ${myprefix}${cmd}`)
     }
+
     
         
 })
 client.on('message', msg=>{
     if (msg.content.startsWith('a!sudo')){
         msg.delete({timeout:1000})
+    }
+})
+client.on('message', msg=>{
+    if (msg.content.startsWith('<@!862143828920369172>')){
+        msg.channel.send('Help command is not here yet but here is the invitelink')
+        msg.channel.send('https://dsc.gg/betterassistant')
     }
 })
 
