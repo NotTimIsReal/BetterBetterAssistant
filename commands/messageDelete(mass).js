@@ -1,5 +1,7 @@
 module.exports = {
     name: 'clear',
+    aliases:['nuke'],
+    permissions:['MANAGE_MESSAGES'],
     description: "Clear messages!",
    async execute(client, message, args) {
         if (!args[0]) return message.reply("Please enter the amount of messages to clear!");

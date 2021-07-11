@@ -1,11 +1,13 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const Discord=require('discord.js');
-const sudo=require('sudo-prompt')
+const mongoose=require('mongoose')
+const profileModel=require('./models/profileSchema')
 const client=new Discord.Client({partials:["MESSAGE","CHANNEL","REACTION"]});
 const fs=require('fs');
+let env=process.env
 
-const myprefix=process.env.PREFIX
-const token=process.env.PREFIX
+const myprefix=env.PREFIX
+const token=env.PREFIX
 
 const memberCounter=require('./counter/membercounter');
 //Stuff 
@@ -37,7 +39,14 @@ client.on('ready',()=>{
         
        }}).then(console.log('Presence has been set'))
 })
-client.on('guildMemberAdd', member=>{
+client.on('guildMemberAdd',async member=>{
+    let profile=await profileModel.create({
+        userID:member.id,
+            serverID:member.guild.id,
+            coins:1500,
+            bank:0,
+    })
+    profile.save()
     const channel = member.guild.channels.cache.find(ch => ch.name === 'member-log');
   // Do nothing if the channel wasn't found on this server
   const embed= new Discord.MessageEmbed()
@@ -89,8 +98,11 @@ const validPermissions = [
     "MANAGE_WEBHOOKS",
     "MANAGE_EMOJIS",
   ]
+  
+
 
 client.on('message',message=>{
+    
     let blacklist=['789325858758066236','778549220755898368']
     if(message.author.id===blacklist)return message.channel.send('Blacklist goes brr')
     if(!message.content.startsWith(myprefix)|| message.author.bot)return
@@ -117,6 +129,21 @@ client.on('message',message=>{
     }
     time_stamps.set(message.author.id, current_time)
     setTimeout(()=> time_stamps.delete(message.author.id), cooldown_amount)
+    if(command.permissions){
+
+        let invalidPerms = []
+        for(const perm of command.permissions){
+          if(!validPermissions.includes(perm)){
+            return console.log(`Invalid Permissions ${perm}`);
+          }
+          if(!message.member.hasPermission(perm)){
+            invalidPerms.push(perm);
+          }
+        }
+        if (invalidPerms.length){
+          return message.channel.send(`Missing Permissions: \`${invalidPerms}\``);
+        }
+      }
     //Good thing
     if(command){
         command.execute(client, message, args, cmd)
@@ -137,6 +164,17 @@ client.on('message', msg=>{
         msg.channel.send('https://dsc.gg/betterassistant')
     }
 })
+mongoose.connect(env.MONGODB_SRV,{
+    useNewUrlParser:true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+
+}).then(()=>{
+    console.log('DB connected')
+}).catch((err)=>{
+    console.log(err)
+})
+
 
     
             

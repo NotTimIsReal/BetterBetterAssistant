@@ -2,9 +2,9 @@ const Discord=require('discord.js')
 
 module.exports={
     name:'kick',
+    permission:'KICK_MEMBERS',
     description:'to kick members',
     execute(client, message,args){
-        if(message.member.permissions.has('KICK_MEMBERS')){
         const user = message.mentions.users.first();
         // If we have a user mentioned
         if (user) {
@@ -38,7 +38,7 @@ module.exports={
           // Otherwise, if no user was mentioned
         } else {
           message.reply("You didn't mention the user to kick!");
-        }}
+        }
 
 }
 }

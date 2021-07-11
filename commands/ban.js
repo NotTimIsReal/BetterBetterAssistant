@@ -1,9 +1,10 @@
 const Discord=require('discord.js')
 module.exports={
     name:'ban',
+    permission:['BAN_MEMBER','ADMINISTRATOR'],
     description:'ban people',
     execute(client, message,args){
-        if(message.member.permissions.has('BAN_MEMBERS')){
+
             const user = message.mentions.users.first();
             // If we have a user mentioned
             var reason
@@ -39,7 +40,7 @@ module.exports={
               // Otherwise, if no user was mentioned
             } else {
               message.reply("You didn't mention the user to Ban!");
-            }}
+            }
     
 
     }
