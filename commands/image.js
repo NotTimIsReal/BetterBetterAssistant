@@ -4,6 +4,7 @@ const Discord=require('discord.js')
 const google = new Scraper({
     puppeteer: {
       headless: true,
+      executablePath: ./node_modules/puppeteer/.local-chromium/linux-818858/chrome-linux/chrome,
     },
   })
 
