@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
-  "author": "Tomato#6966 (author of this template)",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
@@ -20,7 +20,9 @@
     "images-scraper": "^6.3.0",
     "math": "0.0.3",
     "minecraft-server-util": "^3.5.2",
+    "mongodb": "^3.6.10",
     "mongoose": "^5.13.2",
+    "nodemon": "^2.0.12",
     "random-js": "^2.1.0",
     "spotify-url-info": "^2.2.3",
     "yt-search": "^2.9.0",

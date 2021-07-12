@@ -42,7 +42,6 @@ client.on('ready',()=>{
 client.on('guildMemberAdd',async member=>{
     let profile=await profileModel.create({
         userID:member.id,
-            serverID:member.guild.id,
             coins:1500,
             bank:0,
     })
@@ -101,11 +100,24 @@ const validPermissions = [
   
 
 
-client.on('message',message=>{
+client.on('message',async message=>{
     
     let blacklist=['789325858758066236','778549220755898368']
     if(message.author.id===blacklist)return message.channel.send('Blacklist goes brr')
     if(!message.content.startsWith(myprefix)|| message.author.bot)return
+    let profileData;
+    try{profileData= await profileData.findOne({userId:message.author.id})
+    if(!profileData){
+        let profile = await profileModel.create({
+            userID: message.author.id,
+            coins: 1500,
+            bank: 0,})
+        profile.save()
+
+
+
+    }}catch(err){console.log(err)}
+
     const args=message.content.slice(myprefix.length).split(/ +/)
     const cmd=args.shift().toLowerCase();
     const command=client.command.get(cmd)|| client.command.find(a=> a.aliases&& a.aliases.includes(cmd))
@@ -146,7 +158,7 @@ client.on('message',message=>{
       }
     //Good thing
     if(command){
-        command.execute(client, message, args, cmd)
+        command.execute(client, message, args, cmd, profileData)
         console.log(`the command ${myprefix}${cmd}`)
     }
 
