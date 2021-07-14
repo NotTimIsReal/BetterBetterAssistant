@@ -3,6 +3,9 @@ module.exports={
     aliases:['pingpong','pings'],
     description:'Ping-Pong',
     execute(client, message, args){
-        message.channel.send('Pong =)')
+        var yourping = new Date().getTime() - message.createdTimestamp
+        var botping = Math.round(bot.ws.ping)
+
+        message.channel.send(`PONG! Your ping: ${yourping} \nBots ping: ${botping}`)
     }
 }
