@@ -141,7 +141,7 @@ client.on('message',async message=>{
       }
     //Good thing
     if(command){
-        command.execute(client, message, args, cmd, profileData)
+        command.execute(client, message, args, cmd)
         console.log(`the command ${myprefix}${cmd}`)
     }
 
