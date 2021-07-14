@@ -106,7 +106,7 @@ client.on('message',async message=>{
     if(message.author.id===blacklist)return message.channel.send('Blacklist goes brr')
     if(!message.content.startsWith(myprefix)|| message.author.bot)return
     let profileData;
-    try{profileData= await profileData.findOne({userId:message.author.id})
+    try{profileData= await profileData.find({userId:message.author.id})
     if(!profileData){
         let profile = await profileModel.create({
             userID: message.author.id,
