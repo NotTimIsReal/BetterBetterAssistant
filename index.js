@@ -1,7 +1,6 @@
 ﻿require('dotenv').config();
 const Discord=require('discord.js');
 const mongoose=require('mongoose')
-const profileModel=require('./models/profileSchema')
 const client=new Discord.Client({partials:["MESSAGE","CHANNEL","REACTION"]});
 const fs=require('fs');
 let env=process.env
@@ -40,12 +39,6 @@ client.on('ready',()=>{
        }}).then(console.log('Presence has been set'))
 })
 client.on('guildMemberAdd',async member=>{
-    let profile=await profileModel.create({
-        userID:member.id,
-            coins:1500,
-            bank:0,
-    })
-    profile.save()
     const channel = member.guild.channels.cache.find(ch => ch.name === 'member-log');
   // Do nothing if the channel wasn't found on this server
   const embed= new Discord.MessageEmbed()
