@@ -105,18 +105,8 @@ client.on('message',async message=>{
     let blacklist=['789325858758066236','778549220755898368']
     if(message.author.id===blacklist)return message.channel.send('Blacklist goes brr')
     if(!message.content.startsWith(myprefix)|| message.author.bot)return
-    let profileData;
-    try{profileData= await profileData.find({userId:message.author.id})
-    if(!profileData){
-        let profile = await profileModel.create({
-            userID: message.author.id,
-            coins: 1500,
-            bank: 0,})
-        profile.save()
 
 
-
-    }}catch(err){console.log(err)}
 
     const args=message.content.slice(myprefix.length).split(/ +/)
     const cmd=args.shift().toLowerCase();
