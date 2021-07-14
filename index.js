@@ -166,21 +166,6 @@ client.on('message', msg=>{
         msg.channel.send('https://dsc.gg/betterassistant')
     }
 })
-mongoose.connect(env.MONGODB_SRV,{
-    useNewUrlParser:true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-
-}).then(()=>{
-    console.log('DB connected')
-}).catch((err)=>{
-    console.log(err)
-})
-
-
-    
-            
-    
 
 
 
