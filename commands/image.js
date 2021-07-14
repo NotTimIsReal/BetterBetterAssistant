@@ -4,6 +4,8 @@ const Discord=require('discord.js')
 const google = new Scraper({
     puppeteer: {
       headless: true,
+        //delete the bottom bit if ur not using ARM linux distos like raspian
+      executablePath: '/usr/bin/chromium-browser',
     },
   })
 
